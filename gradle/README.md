@@ -1,0 +1,1 @@
+mvvm + coroutines + dataBinding + Glide + arouter + lifecycle + livedata
