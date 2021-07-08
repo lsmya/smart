@@ -1,4 +1,4 @@
-package cn.lsmya.smart.extension
+package cn.lsmya.smart.bindingadapter
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView

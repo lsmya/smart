@@ -1,4 +1,4 @@
-package cn.lsmya.smart.extension
+package cn.lsmya.smart.bindingadapter
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
