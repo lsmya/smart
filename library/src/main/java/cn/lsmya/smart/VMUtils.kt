@@ -3,6 +3,9 @@ package cn.lsmya.smart
 import cn.lsmya.smart.base.BaseViewModel
 import java.lang.reflect.ParameterizedType
 
+/**
+ * 获取ViewModel对应的Class
+ */
 object VMUtils {
     fun <VM> getVMClass(mCls: Class<*>): Class<VM> {
         var cls: Class<*>? = mCls

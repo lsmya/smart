@@ -1,7 +1,7 @@
 package cn.lsmya.smart.extension
 
 import androidx.lifecycle.viewModelScope
-import cn.lsmya.smart.Error
+import cn.lsmya.smart.model.Error
 import cn.lsmya.smart.base.BaseResponseParser
 import cn.lsmya.smart.base.BaseViewModel
 import com.bumptech.glide.load.HttpException
