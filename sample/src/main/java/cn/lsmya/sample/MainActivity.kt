@@ -8,7 +8,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getViewModel().adapter.setOnItemClickListener { _, view, position ->
-
         }
         getViewModel().msg.observe(this){
 
