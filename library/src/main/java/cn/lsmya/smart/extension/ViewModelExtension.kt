@@ -1,9 +1,9 @@
 package cn.lsmya.smart.extension
 
 import androidx.lifecycle.viewModelScope
-import cn.lsmya.smart.model.Error
 import cn.lsmya.smart.base.BaseResponseParser
 import cn.lsmya.smart.base.BaseViewModel
+import cn.lsmya.smart.model.Error
 import com.bumptech.glide.load.HttpException
 import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException
@@ -23,11 +23,11 @@ import java.net.UnknownHostException
  * @param showLoading   请求开始前是否显示loading弹窗
  * @param onSuccess     请求成功回调
  */
-fun <T : BaseResponseParser> BaseViewModel.launch(
+fun <T : BaseResponseParser<M>, M> BaseViewModel.launch(
     request: suspend CoroutineScope.() -> T,
     showToast: Boolean = true,
     showLoading: Boolean = true,
-    onSuccess: ((T) -> Unit),
+    onSuccess: ((M) -> Unit),
 ) {
     launch(
         request = request,
@@ -48,12 +48,12 @@ fun <T : BaseResponseParser> BaseViewModel.launch(
  * @param onError       请求错误回调：包含服务器返回的错误及请求错误
  * @param onFinally     请求结束回调
  */
-fun <T : BaseResponseParser> BaseViewModel.launch(
+fun <T : BaseResponseParser<M>, M> BaseViewModel.launch(
     request: suspend CoroutineScope.() -> T,
     showToast: Boolean = true,
     showLoading: Boolean = true,
     onStart: (() -> Unit)? = null,
-    onSuccess: ((T) -> Unit),
+    onSuccess: ((M) -> Unit),
     onError: ((Error) -> Unit)? = null,
     onFinally: (() -> Unit)? = null,
 ): Job {
@@ -65,7 +65,9 @@ fun <T : BaseResponseParser> BaseViewModel.launch(
             onStart?.invoke()
             val response = request()
             if (response.isSuccess()) {
-                onSuccess.invoke(response)
+                response.getResult()?.let {
+                    onSuccess.invoke(it)
+                }
             } else {
                 val error = Error(code = response.getCode(), msg = response.getMsg())
                 if (showToast) {

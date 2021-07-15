@@ -12,8 +12,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun click(v: View) {
         launch({ RetrofitUtils.get().getNews() }) {
-            msg.value = it.data!!
-            adapter.setNewInstance(it.data)
+            msg.value = it
+            adapter.setNewInstance(it)
         }
     }
 }

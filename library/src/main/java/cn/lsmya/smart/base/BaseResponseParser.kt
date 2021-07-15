@@ -1,6 +1,6 @@
 package cn.lsmya.smart.base
 
-interface BaseResponseParser {
+interface BaseResponseParser<T> {
     /**
      * 是否请求成功
      */
@@ -15,4 +15,6 @@ interface BaseResponseParser {
      * 获取服务器返回状态码
      */
     fun getCode(): Int
+
+    fun getResult(): T?
 }

@@ -1,6 +1,5 @@
 package cn.lsmya.sample
 
-import cn.lsmya.smart.model.ResponseResult
 import retrofit2.http.GET
 
 interface RetrofitService {

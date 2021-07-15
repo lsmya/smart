@@ -1,4 +1,4 @@
-package cn.lsmya.smart.model
+package cn.lsmya.sample
 
 import cn.lsmya.smart.base.BaseResponseParser
 import com.google.gson.annotations.SerializedName
@@ -10,7 +10,7 @@ class ResponseResult<T>(
     var errorMsg: String? = "",
     @SerializedName("data")
     var data: T? = null,
-) : BaseResponseParser {
+) : BaseResponseParser<T> {
     override fun isSuccess(): Boolean {
         return errorCode == 1
     }
@@ -22,4 +22,9 @@ class ResponseResult<T>(
     override fun getCode(): Int {
         return errorCode
     }
+
+    override fun getResult(): T? {
+        return data
+    }
+
 }
