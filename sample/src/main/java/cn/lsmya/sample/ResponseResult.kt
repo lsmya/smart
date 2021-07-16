@@ -15,11 +15,11 @@ class ResponseResult<T>(
         return errorCode == 1
     }
 
-    override fun getMsg(): String? {
+    override fun getMessage(): String? {
         return errorMsg
     }
 
-    override fun getCode(): Int {
+    override fun getResultCode(): Int {
         return errorCode
     }
 

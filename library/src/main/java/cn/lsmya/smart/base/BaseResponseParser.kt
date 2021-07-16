@@ -9,12 +9,12 @@ interface BaseResponseParser<T> {
     /**
      * 获取错误信息
      */
-    fun getMsg(): String?
+    fun getMessage(): String?
 
     /**
      * 获取服务器返回状态码
      */
-    fun getCode(): Int
+    fun getResultCode(): Int
 
     fun getResult(): T?
 }

@@ -66,10 +66,13 @@ fun <T : BaseResponseParser<M>, M> BaseViewModel.launch(
             val response = request()
             if (response.isSuccess()) {
                 response.getResult()?.let {
+                    if (showLoading) {
+                        hideLoading()
+                    }
                     onSuccess.invoke(it)
                 }
             } else {
-                val error = Error(code = response.getCode(), msg = response.getMsg())
+                val error = Error(code = response.getResultCode(), msg = response.getMessage())
                 if (showToast) {
                     error.msg?.let {
                         toast(it)
