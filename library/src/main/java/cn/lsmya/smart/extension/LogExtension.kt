@@ -2,36 +2,44 @@ package cn.lsmya.smart.extension
 
 import android.util.Log
 
-fun Any.eJson() {
-    log(Log.ERROR, this.toJson())
+fun Any?.eJson() {
+    this?.let {
+        log(Log.ERROR, it.toJson())
+    }
 }
 
-fun Any.e() {
+fun Any?.e() {
     log(Log.ERROR, this)
 }
 
-fun logd(any: Any) {
+fun logd(any: Any?) {
     log(Log.DEBUG, any)
 }
 
-fun loge(any: Any) {
+fun loge(any: Any?) {
     log(Log.ERROR, any)
 }
 
-fun logi(any: Any) {
+fun logi(any: Any?) {
     log(Log.INFO, any)
 }
 
-fun logv(any: Any) {
+fun logv(any: Any?) {
     log(Log.VERBOSE, any)
 }
 
-fun logw(any: Any) {
+fun logw(any: Any?) {
     log(Log.WARN, any)
 }
 
 private fun log(method: Int, any: Any?) {
     any?.let {
+        val logMsg =
+            if (it is String || it is Int || it is Double || it is Float || it is Boolean) {
+                it.toString()
+            } else {
+                it.toJson()
+            }
         val stackTrace = Thread.currentThread().stackTrace[4]
         val tag = "log"
         val msg = String.format(
@@ -39,7 +47,7 @@ private fun log(method: Int, any: Any?) {
             stackTrace.fileName,
             stackTrace.lineNumber,
             stackTrace.methodName
-        ) + any.toString()
+        ) + logMsg
         when (method) {
             Log.DEBUG -> Log.d(tag, msg)
             Log.ERROR -> Log.e(tag, msg)

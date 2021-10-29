@@ -8,13 +8,12 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import cn.lsmya.smart.BR
 import cn.lsmya.smart.VMUtils
 
 abstract class BaseMvvmFragment<VB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutId: Int) :
-    Fragment() {
+    BaseFragment() {
     private lateinit var binding: VB
     private var viewModel: VM? = null
 
@@ -45,16 +44,6 @@ abstract class BaseMvvmFragment<VB : ViewDataBinding, VM : BaseViewModel>(@Layou
             viewModel = ViewModelProvider(this).get(cls)
         }
         return viewModel!!
-    }
-
-
-    private fun showLoading() {
-    }
-
-    /**
-     * 隐藏加载loading动画
-     */
-    private fun hideLoading() {
     }
 
 }
