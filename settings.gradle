@@ -14,6 +14,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "MyPhoto"
+rootProject.name = "智能工具"
 include ':app'
 include ':smart'
