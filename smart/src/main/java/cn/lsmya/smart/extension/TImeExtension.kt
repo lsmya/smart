@@ -1,13 +1,15 @@
 package cn.lsmya.smart.extension
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 fun Long.toDate(pattern: String): String {
     val date = Date(this)
     val format = SimpleDateFormat(pattern);
     return format.format(date)
 }
+
 fun Long.toDate(): String {
     if (this <= 0) {
         return ""
@@ -16,5 +18,31 @@ fun Long.toDate(): String {
 }
 
 fun String?.stampToDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
-    return if ( this.isNullOrEmpty() ) -1L else SimpleDateFormat(pattern).parse(this)?.time ?: -1L
+    return if (this.isNullOrEmpty()) -1L else SimpleDateFormat(pattern).parse(this)?.time ?: -1L
+}
+
+fun Date?.toTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): String? {
+    return if (this == null) {
+        null
+    } else {
+        SimpleDateFormat(pattern).format(this)
+    }
+}
+
+fun String?.toDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
+    return if (this == null) {
+        null
+    } else {
+        SimpleDateFormat(pattern).parse(this)
+    }
+}
+
+fun String?.toCalendar(pattern: String = "yyyy-MM-dd HH:mm:ss"): Calendar? {
+    return if (this == null) {
+        null
+    } else {
+        val calendar = Calendar.getInstance()
+        calendar.time = this.toDate(pattern)!!
+        calendar
+    }
 }
