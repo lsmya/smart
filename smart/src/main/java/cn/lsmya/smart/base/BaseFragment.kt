@@ -39,33 +39,56 @@ abstract class BaseFragment : Fragment() {
     /**
      * 选择图片(单选)
      */
-    protected fun pictureSelectorSingleOfImage(
-        chooseMode: Int = SelectMimeType.ofImage(),
+    protected fun selectSingleImage(
         cancel: (() -> Unit)? = null,
         callback: ((String) -> Unit)? = null,
     ) {
-        pictureSelectorOfImage(chooseMode = chooseMode, cancel = cancel, callback = {
-            if (it.isNotEmpty()) {
-                callback?.invoke(it[0])
-            }
-        })
+        if (activity is BaseActivity)
+            (activity as BaseActivity).selectSingleImage(
+                cancel = cancel,
+                callback = callback
+            )
     }
 
     /**
-     * 选择图片（可多选）
+     * 选择视频(单选)
      */
-    protected fun pictureSelectorOfImage(
-        chooseMode: Int = SelectMimeType.ofImage(),
+    protected fun selectSingleVideo(
         cancel: (() -> Unit)? = null,
-        callback: ((ArrayList<String>) -> Unit)? = null,
+        callback: ((String) -> Unit)? = null,
     ) {
-        PictureSelector.create(this)
-            .openGallery(chooseMode)
-            .setSelectionMode(SelectModeConfig.SINGLE)
-            .setImageEngine(GlideEngine.createGlideEngine())
-            .isDirectReturnSingle(true)
-            .setCropEngine(ImageFileCropEngine())
-            .setCompressEngine(ImageFileCompressEngine())
-            .callback(cancel = cancel, callback = callback)
+        if (activity is BaseActivity)
+            (activity as BaseActivity).selectSingleVideo(
+                cancel = cancel,
+                callback = callback
+            )
+    }
+
+    /**
+     * 选择图片(多选)
+     */
+    protected fun selectMultipleImage(
+        cancel: (() -> Unit)? = null,
+        callback: ((ArrayList<String>) -> Unit)
+    ) {
+        if (activity is BaseActivity)
+            (activity as BaseActivity).selectMultipleImage(
+                cancel = cancel,
+                callback = callback
+            )
+    }
+
+    /**
+     * 选择视频(多选)
+     */
+    protected fun selectMultipleVideo(
+        cancel: (() -> Unit)? = null,
+        callback: ((ArrayList<String>) -> Unit)
+    ) {
+        if (activity is BaseActivity)
+            (activity as BaseActivity).selectMultipleVideo(
+                cancel = cancel,
+                callback = callback
+            )
     }
 }

@@ -11,8 +11,7 @@ import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.config.SelectModeConfig
 import com.lxj.xpopup.XPopup
 
-
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     private val loading by lazy {
         XPopup.Builder(this)
@@ -59,29 +58,81 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * 选择图片(单选)
      */
-    protected fun pictureSelectorSingleOfImage(
-        chooseMode: Int,
+    fun selectSingleImage(
         cancel: (() -> Unit)? = null,
         callback: ((String) -> Unit)? = null,
     ) {
-        pictureSelectorOfImage(chooseMode = chooseMode, cancel = cancel, callback = {
-            if (it.isNotEmpty()) {
-                callback?.invoke(it[0])
-            }
-        })
+        pictureSelector(
+            chooseMode = SelectMimeType.ofImage(),
+            selectionMode = SelectModeConfig.SINGLE,
+            cancel = cancel,
+            callback = {
+                if (it.isNotEmpty()) {
+                    callback?.invoke(it[0])
+                }
+            })
     }
 
     /**
-     * 选择图片（可多选）
+     * 选择视频(单选)
      */
-    protected fun pictureSelectorOfImage(
-        chooseMode: Int = SelectMimeType.ofImage(),
+    fun selectSingleVideo(
+        cancel: (() -> Unit)? = null,
+        callback: ((String) -> Unit)? = null,
+    ) {
+        pictureSelector(
+            chooseMode = SelectMimeType.ofVideo(),
+            selectionMode = SelectModeConfig.SINGLE,
+            cancel = cancel,
+            callback = {
+                if (it.isNotEmpty()) {
+                    callback?.invoke(it[0])
+                }
+            })
+    }
+
+    /**
+     * 选择图片(多选)
+     */
+    fun selectMultipleImage(
+        cancel: (() -> Unit)? = null,
+        callback: ((ArrayList<String>) -> Unit)
+    ) {
+        pictureSelector(
+            chooseMode = SelectMimeType.ofImage(),
+            selectionMode = SelectModeConfig.MULTIPLE,
+            cancel = cancel,
+            callback = callback,
+        )
+    }
+
+    /**
+     * 选择视频(多选)
+     */
+    fun selectMultipleVideo(
+        cancel: (() -> Unit)? = null,
+        callback: ((ArrayList<String>) -> Unit)
+    ) {
+        pictureSelector(
+            chooseMode = SelectMimeType.ofVideo(),
+            selectionMode = SelectModeConfig.SINGLE,
+            cancel = cancel,
+            callback = callback
+        )
+    }
+
+    /**
+     * 选择图片、视频（可多选）
+     */
+    private fun pictureSelector(
+        chooseMode: Int,
+        selectionMode: Int,
         cancel: (() -> Unit)? = null,
         callback: ((ArrayList<String>) -> Unit)? = null,
     ) {
         PictureSelector.create(this)
             .openGallery(chooseMode)
-            .setSelectionMode(SelectModeConfig.SINGLE)
+            .setSelectionMode(selectionMode)
             .setImageEngine(GlideEngine.createGlideEngine())
             .isDirectReturnSingle(true)
             .setCropEngine(ImageFileCropEngine())

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class WifiUtil {
         Log.d("getDetailsWifiInfo", sInfo.toString());
     }
 
-    // TODO: 2021/9/15 获取附近wifi信号
+    // 获取附近wifi信号
     public List<String> getAroundWifiDeviceInfo() {
         StringBuffer sInfo = new StringBuffer();
         WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -96,9 +97,13 @@ public class WifiUtil {
             }
         }
 
-        return newScanResultList.stream()
-                .filter(wifi -> wifi.BSSID != null && !wifi.SSID.equals(""))
-                .collect(Collectors.toList());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return newScanResultList.stream()
+                    .filter(wifi -> wifi.BSSID != null && !wifi.SSID.equals(""))
+                    .collect(Collectors.toList());
+        }else {
+            return  new ArrayList<>();
+        }
     }
 
 

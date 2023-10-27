@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import cn.lsmya.smart.BR
 import cn.lsmya.smart.utils.VMUtils
 
-open class BaseMvvmActivity<VB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutId: Int) :
+abstract class BaseMvvmActivity<VB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutId: Int) :
     BaseActivity() {
     private lateinit var binding: VB
     private var viewModel: VM? = null
