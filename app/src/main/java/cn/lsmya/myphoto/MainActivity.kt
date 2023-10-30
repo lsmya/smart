@@ -26,7 +26,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         adapter.setOnItemClickListener { adapter, v, position ->
             when (adapter.getItem(position)) {
                 WebActivity::class.java -> {
-                    WebActivity.start(this, "", "http://www.xiaoshoukeji.cn/privacy.html")
+                    WebActivity.start(this, "http://www.xiaoshoukeji.cn/privacy.html")
                 }
 
                 else -> {
@@ -41,6 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         adapter.add(TestSplashActivity::class.java)
         adapter.add(TestGestureActivity::class.java)
         adapter.add(WebActivity::class.java)
+        adapter.add(VideoActivity::class.java)
     }
 
     class MyAdapter : BaseQuickAdapter<Class<*>, QuickViewHolder>() {
