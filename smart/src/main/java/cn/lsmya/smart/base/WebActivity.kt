@@ -3,7 +3,6 @@ package cn.lsmya.smart.base
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebChromeClient
@@ -56,11 +55,6 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
     override fun initData() {
         //加载网络url
         getBinding().webView.loadUrl(url)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     private val mWebViewClient = object : WebViewClient() {

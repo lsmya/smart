@@ -7,5 +7,17 @@
     </declare-styleable>
     <declare-styleable name="VerificationCodeInputText">
         <attr name="android:textColor" format="color" />
+        <attr name="codeNumber" format="integer" />
+        <attr name="boxHeight" format="dimension" />
+        <attr name="verticalPadding" format="dimension" />
+        <attr name="horizontalPadding" format="dimension" />
+        <attr name="colorControlNormalDrawable" format="integer" />
+        <attr name="colorControlActivatedDrawable" format="integer" />
+        <attr name="boxInputType">
+            <enum name="number" value="0" />
+            <enum name="text" value="1" />
+            <enum name="password" value="2" />
+            <enum name="phone" value="3" />
+        </attr>
     </declare-styleable>
 </resources>

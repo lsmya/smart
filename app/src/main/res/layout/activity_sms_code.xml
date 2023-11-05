@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SmsCodeActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#ff0000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#fff000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#009688" />
+
+    <cn.lsmya.smart.widget.VerificationCodeInputText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:background="#FF5722"
+        android:textColor="#ff0000"
+        app:boxHeight="50dp"
+        app:codeNumber="6"
+        app:horizontalPadding="10dp"
+        app:verticalPadding="25dp" />
+</FrameLayout>

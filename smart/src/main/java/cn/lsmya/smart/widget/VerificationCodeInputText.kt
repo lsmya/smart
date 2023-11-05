@@ -20,6 +20,7 @@ import android.widget.LinearLayout
 import androidx.core.widget.doAfterTextChanged
 import cn.lsmya.smart.R
 import cn.lsmya.smart.extension.isNotNullOrEmpty
+import com.lxj.xpopup.util.XPopupUtils.dp2px
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,9 +34,10 @@ class VerificationCodeInputText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr), ClipInterface {
 
-    private val boxNumber = 4
-    private val boxHeight = 150
-    private var childPadding = 50
+    private var boxNumber = 4
+    private var boxHeight = 150
+    private var horizontalPadding = 50
+    private var verticalPadding = 0
 
     private val TYPE_NUMBER = "number"
     private val TYPE_TEXT = "text"
@@ -45,13 +47,15 @@ class VerificationCodeInputText @JvmOverloads constructor(
     private var boxBgFocus: Drawable? = null
     private var boxBgNormal: Drawable? = null
 
-    private val inputType = TYPE_NUMBER
+    private var inputType = TYPE_NUMBER
 
     private var mTextColor: Int = Color.BLACK
 
     var listener: VerCideListener? = null
 
     init {
+        boxBgNormal = context.getDrawable(R.drawable.box_bottom_cursor_normal)
+        boxBgFocus = context.getDrawable(R.drawable.box_bottom_cursor_focus)
         val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeInputText)
         for (i in 0..typedArray.indexCount) {
@@ -60,12 +64,45 @@ class VerificationCodeInputText @JvmOverloads constructor(
                     mTextColor =
                         typedArray.getColor(attr, 0x000000)
                 }
+
+                R.styleable.VerificationCodeInputText_codeNumber -> {
+                    boxNumber = typedArray.getInt(attr, 4)
+                }
+
+                R.styleable.VerificationCodeInputText_boxHeight -> {
+                    boxHeight = typedArray.getDimensionPixelSize(
+                        attr, dp2px(context, 0f)
+                    )
+                }
+
+                R.styleable.VerificationCodeInputText_verticalPadding -> {
+                    verticalPadding = typedArray.getDimensionPixelSize(
+                        attr, dp2px(context, 0f)
+                    )
+                }
+
+                R.styleable.VerificationCodeInputText_horizontalPadding -> {
+                    horizontalPadding = typedArray.getDimensionPixelSize(
+                        attr, dp2px(context, 0f)
+                    )
+                }
+
+                R.styleable.VerificationCodeInputText_colorControlNormalDrawable -> {
+                    boxBgNormal = typedArray.getDrawable(attr)
+                }
+
+                R.styleable.VerificationCodeInputText_colorControlActivatedDrawable -> {
+                    boxBgFocus = typedArray.getDrawable(attr)
+                }
+
+                R.styleable.VerificationCodeInputText_boxInputType -> {
+                    var index = typedArray.getInt(attr, 0)
+                    inputType =
+                        arrayListOf(TYPE_NUMBER, TYPE_TEXT, TYPE_PASSWORD, TYPE_PHONE)[index]
+                }
             }
         }
         typedArray.recycle()
-
-        boxBgNormal = context.getDrawable(R.drawable.box_bottom_cursor_normal)
-        boxBgFocus = context.getDrawable(R.drawable.box_bottom_cursor_focus)
         val onKeyListener = OnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_DEL) {
                 backFocusClearAll()
@@ -122,8 +159,14 @@ class VerificationCodeInputText @JvmOverloads constructor(
             }
             editText.setOnFocusChangeListener { view, b ->
                 setBg(editText, b)
-
             }
+            val lp = if (editText.layoutParams == null) LayoutParams(
+                0,
+                boxHeight
+            ) else editText.layoutParams.apply {
+                this.height = boxHeight
+            }
+            editText.layoutParams = lp
             addView(editText, index)
         }
     }
@@ -138,8 +181,8 @@ class VerificationCodeInputText @JvmOverloads constructor(
             val child = getChildAt(0)
             val cWidth = child.measuredWidth
             val cHeight = child.measuredHeight
-            val maxH = cHeight + 2 * childPadding
-            val maxW = cWidth * count + childPadding * (count + 1)
+            val maxH = cHeight + 2 * verticalPadding
+            val maxW = cWidth * count + horizontalPadding * (count + 1)
             //上面都是计算当前editText的width加上pandding，之后设置给父布局
             setMeasuredDimension(
                 View.resolveSize(maxW, widthMeasureSpec),
@@ -150,26 +193,24 @@ class VerificationCodeInputText @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val childCount = childCount
-        val boxWidth = (measuredWidth - (childPadding * (boxNumber - 1))) / boxNumber
-
+        val boxWidth = (measuredWidth - (horizontalPadding * (boxNumber - 1))) / boxNumber
 
         for (index in 0 until childCount) {
             val child = getChildAt(index)
             child.visibility = View.VISIBLE
 
             val layoutParams = LinearLayout.LayoutParams(boxWidth, boxHeight)
-            layoutParams.bottomMargin = childPadding
-            layoutParams.topMargin = childPadding
-            layoutParams.leftMargin = if (index == 0) 0 else childPadding
-            layoutParams.rightMargin = if (index == boxNumber - 1) 0 else childPadding
+            layoutParams.bottomMargin = verticalPadding
+            layoutParams.topMargin = verticalPadding
+            layoutParams.leftMargin = if (index == 0) 0 else horizontalPadding
+            layoutParams.rightMargin = if (index == boxNumber - 1) 0 else horizontalPadding
             layoutParams.gravity = Gravity.CENTER
             child.layoutParams = layoutParams
 
-
             val cHeight = child.measuredHeight
-            val cl = index * (boxWidth + childPadding)
+            val cl = index * (boxWidth + horizontalPadding)
             val cr = cl + boxWidth
-            val ct = childPadding
+            val ct = verticalPadding
             val cb = ct + cHeight
             child.layout(cl, ct, cr, cb)
         }
